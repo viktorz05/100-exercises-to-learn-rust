@@ -10,7 +10,10 @@ pub fn speed(start: u32, end: u32, time_elapsed: u32) -> u32 {
     //  Do you need to annotate the type of `distance`? Why or why not?
 
     // Don't change the line below
+    let distance= end - start;
     distance / time_elapsed
+
+    // start and end are both u32 variables so rust compiler will infer the type from its usage
 }
 
 #[cfg(test)]
