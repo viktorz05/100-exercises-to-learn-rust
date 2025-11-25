@@ -10,10 +10,13 @@ pub struct Ticket {
 mod tests {
     use super::Ticket;
     use std::mem::size_of;
-
+    // +---------+--------+----------+
+    // | Pointer | Length | Capacity | <--- String
+    // +---------+--------+----------+
+    // 8 bytes   8 bytes  8 bytes = 24 bytes
     #[test]
     fn string_size() {
-        assert_eq!(size_of::<String>(), todo!());
+        assert_eq!(size_of::<String>(), 24); // Capacity, length and pointers are all represented as usizes in Rust. --> usize is 8 bytes on 64-bit systems.
     }
 
     #[test]
@@ -23,6 +26,6 @@ mod tests {
         // but, in general, the memory layout of structs is a more complex topic.
         // If you're curious, check out the "Type layout" section of The Rust Reference
         // https://doc.rust-lang.org/reference/type-layout.html for more information.
-        assert_eq!(size_of::<Ticket>(), todo!());
+        assert_eq!(size_of::<Ticket>(), 72);
     }
 }
