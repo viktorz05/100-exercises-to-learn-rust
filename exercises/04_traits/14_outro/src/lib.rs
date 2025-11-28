@@ -8,3 +8,20 @@
 //   It should be possible to print its debug representation.
 //
 // Tests are located in the `tests` folder—pay attention to the visibility of your types and methods.
+#[derive(PartialEq, Debug)]
+pub struct SaturatingU16 {
+    value: u16
+}
+impl From<u16> for SaturatingU16 {
+    fn from(val: u16) -> Self {
+        SaturatingU16 { value: val } 
+        
+    }
+}
+
+impl std::ops::Add for SaturatingU16 {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self::Output {
+        todo!()
+    }
+}
