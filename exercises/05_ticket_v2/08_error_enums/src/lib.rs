@@ -1,16 +1,31 @@
 // TODO: Use two variants, one for a title error and one for a description error.
 //   Each variant should contain a string with the explanation of what went wrong exactly.
 //   You'll have to update the implementation of `Ticket::new` as well.
-enum TicketNewError {}
+enum TicketNewError {
+    TitleError {descr: String},
+    DescriptionError {descr: String},
+}
 
 // TODO: `easy_ticket` should panic when the title is invalid, using the error message
 //   stored inside the relevant variant of the `TicketNewError` enum.
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
-}
+    validate_title(&title);
+        let valid_description;
+    if description.is_empty() || description.len() > 500 {
+        valid_description = "Description not provided".into();
+    } else {
+        valid_description = description;
+    }
 
+    Ticket { 
+        title, 
+        description: valid_description, 
+        status 
+    }
+}
+// basically same exercise as last one lol
 #[derive(Debug, PartialEq)]
 struct Ticket {
     title: String,
@@ -32,16 +47,16 @@ impl Ticket {
         status: Status,
     ) -> Result<Ticket, TicketNewError> {
         if title.is_empty() {
-            return Err("Title cannot be empty".to_string());
+            return Err(TicketNewError::TitleError{descr: "Title cannot be empty".into()});
         }
         if title.len() > 50 {
-            return Err("Title cannot be longer than 50 bytes".to_string());
+            return Err(TicketNewError::TitleError{descr: "Title cannot be longer than 50 bytes".into()});
         }
         if description.is_empty() {
-            return Err("Description cannot be empty".to_string());
+            return Err(TicketNewError::DescriptionError{descr: String::from("Description cannot be empty")});
         }
         if description.len() > 500 {
-            return Err("Description cannot be longer than 500 bytes".to_string());
+            return Err(TicketNewError::DescriptionError{descr: "Description cannot be longer than 500 bytes".into()});
         }
 
         Ok(Ticket {
@@ -52,6 +67,14 @@ impl Ticket {
     }
 }
 
+fn validate_title(title: &String) {
+    if title.is_empty() {
+        panic!("Title cannot be empty");
+    }
+    if title.len() > 50 {
+        panic!("Title cannot be longer than 50 bytes");
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
