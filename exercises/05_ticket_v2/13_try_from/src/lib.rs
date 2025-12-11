@@ -8,15 +8,10 @@ enum Status {
     Done,
 }
 
-<<<<<<< HEAD
-enum ParseStatusError {
-    
-=======
 #[derive(Debug, thiserror::Error)]
 #[error("Only To-Do, In Progress and Done status are allowed")]
 struct ParseStatusError {
     invalid_string: String
->>>>>>> 8cf4f1ea0505d367c27a564c3175d0232f96cfc6
 }
 impl TryFrom<&str> for Status {
     type Error = ParseStatusError;
