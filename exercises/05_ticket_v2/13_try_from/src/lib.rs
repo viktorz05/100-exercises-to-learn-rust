@@ -7,6 +7,10 @@ enum Status {
     InProgress,
     Done,
 }
+
+enum ParseStatusError {
+    
+}
 impl TryFrom<&str> for Status {
     type Error = Status;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
