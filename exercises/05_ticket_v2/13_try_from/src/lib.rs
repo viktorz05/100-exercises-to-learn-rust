@@ -8,34 +8,47 @@ enum Status {
     Done,
 }
 
+<<<<<<< HEAD
 enum ParseStatusError {
     
+=======
+#[derive(Debug, thiserror::Error)]
+#[error("Only To-Do, In Progress and Done status are allowed")]
+struct ParseStatusError {
+    invalid_string: String
+>>>>>>> 8cf4f1ea0505d367c27a564c3175d0232f96cfc6
 }
 impl TryFrom<&str> for Status {
-    type Error = Status;
+    type Error = ParseStatusError;
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
+        match value.to_lowercase().as_str() {
             "todo" => Ok(Status::ToDo),
-            "InProgress" => Ok(Status::InProgress),
-            "Done" => Ok(Status::Done),
-            _ => Err(Status::Error)
+            "inprogress" => Ok(Status::InProgress),
+            "done" => Ok(Status::Done),
+            _ => Err(ParseStatusError {
+                invalid_string: value.to_string()
+            })
         }
         
     }
 }
 
 impl TryFrom<String> for Status {
-    type Error = Status;
+    type Error = ParseStatusError;
+    // fn try_from(value: String) -> Result<Self, Self::Error> {
+    //     match value.to_lowercase().as_str() {
+    //         "todo" => Ok(Status::ToDo),
+    //         "inprogress" => Ok(Status::InProgress),
+    //         "done" => Ok(Status::Done),
+    //         _ => Err(ParseStatusError {
+    //             invalid_string : value
+    //         })
+    //     }
     fn try_from(value: String) -> Result<Self, Self::Error> {
-        let parse_value = value.to_ascii_lowercase();
-        match &parse_value {
-            "todo".into() => Ok(Status::ToDo),
-            "inprogress" => Ok(Status::InProgress),
-            "done" => Ok(Status::Done),
-            _ => Err(())
-        }
-        
+        value.as_str().try_into()
     }
+        
+    // }
 }
 #[cfg(test)]
 mod tests {
