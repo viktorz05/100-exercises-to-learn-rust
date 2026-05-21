@@ -12,13 +12,12 @@ use tokio::net::TcpListener;
 // - `tokio::io::copy` to copy data from the reader to the writer
 pub async fn echo(listener: TcpListener) -> Result<(), anyhow::Error> {
     match listener.accept().await {
-        Ok((_socket, addr)) => {
+        Ok((mut _socket, _)) => {
             let (mut read_sock, mut write_sock) = _socket.split();
-            tokio::io::copy(read_sock, write_sock)
-        }
-        Err(e) => todo!(),
+            tokio::io::copy(&mut read_sock,&mut write_sock).await?;
+        },
+        Err(e) => Err(e.into()) 
     }
-    
 }
 
 #[cfg(test)]
